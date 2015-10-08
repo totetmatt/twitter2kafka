@@ -1,0 +1,10 @@
+twitter:
+    OAuthConsumerKey: 
+    OAuthConsumerSecret: 
+    OAuthAccessToken: 
+    OAuthAccessTokenSecret: 
+kafka:
+    brokerList: localhost:9092
+    serializerClass: kafka.serializer.StringEncoder
+    requestRequiredAcks: 1
+    kafkaTopic: Twitter.live
