@@ -64,7 +64,10 @@ public class Twitter2kafkaApplication {
     public void run() {
 
         twitterStream.addListener(listener);
-        // this.start();
+        
+        if (queryStreamConfiguration.isAutostart()) {
+            this.start();
+        }
 
     }
 
@@ -90,8 +93,6 @@ public class Twitter2kafkaApplication {
         twitterStream.shutdown();
         running = false;
     }
-    
-    
 
     public QueryStreamConfiguration getQueryStreamConfiguration() {
         return queryStreamConfiguration;

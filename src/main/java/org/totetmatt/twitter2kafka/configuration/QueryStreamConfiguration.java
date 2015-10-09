@@ -40,6 +40,15 @@ public class QueryStreamConfiguration {
     List<String> words = new ArrayList<String>();
 
     boolean useSampleStream;
+    boolean autostart;
+
+    
+    public boolean isAutostart() {
+        return autostart;
+    }
+    public void setAutostart(boolean autostart) {
+        this.autostart = autostart;
+    }
 
     public String[] filterQueryWords() {
         return words.stream().toArray(String[]::new);

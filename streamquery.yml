@@ -1,3 +1,4 @@
 users: []
 words: []
 useSampleStream: true
+autostart: true

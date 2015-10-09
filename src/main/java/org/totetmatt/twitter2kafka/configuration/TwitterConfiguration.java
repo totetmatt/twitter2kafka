@@ -19,9 +19,7 @@ public class TwitterConfiguration {
 	@NotNull
 	private String OAuthAccessTokenSecret;
 
-
-
-	public String getOAuthConsumerKey() {
+    public String getOAuthConsumerKey() {
 		return OAuthConsumerKey;
 	}
 	public void setOAuthConsumerKey(String oAuthConsumerKey) {
