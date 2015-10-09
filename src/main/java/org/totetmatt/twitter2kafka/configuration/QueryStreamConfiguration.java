@@ -8,6 +8,7 @@ import java.util.List;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
+import org.totetmatt.twitter2kafka.configuration.QueryStreamConfiguration.JsonQueryStreamConfiguration;
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.nodes.Tag;
@@ -22,6 +23,19 @@ import utils.UserIdResolver;
 @Configuration
 @ConfigurationProperties(locations = { "file:./streamquery.yml" })
 public class QueryStreamConfiguration {
+    public class JsonQueryStreamConfiguration{
+        public List<User> users = new ArrayList<User>();
+        public List<Place> locations = new ArrayList<Place>();
+        public List<String> words = new ArrayList<String>();
+        public boolean useSampleStream;
+        public JsonQueryStreamConfiguration(QueryStreamConfiguration conf) {
+            this.users = conf.getUsers();
+            this.locations = conf.getLocations();
+            this.words = conf.getWords();
+            this.useSampleStream = conf.isUseSampleStream();
+        }
+        
+    }
     List<User> users = new ArrayList<User>();
     List<Place> locations = new ArrayList<Place>();
     List<String> words = new ArrayList<String>();
@@ -86,7 +100,9 @@ public class QueryStreamConfiguration {
             }
         });
     }
-
+    public JsonQueryStreamConfiguration getJsonQueryStreamConfiguration(){
+        return new JsonQueryStreamConfiguration(this);
+    }
     public void save() {
         Representer representer = new Representer();
 

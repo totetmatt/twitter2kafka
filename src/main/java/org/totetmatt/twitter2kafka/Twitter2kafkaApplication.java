@@ -10,6 +10,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.totetmatt.twitter2kafka.configuration.KafkaConfiguration;
 import org.totetmatt.twitter2kafka.configuration.QueryStreamConfiguration;
+import org.totetmatt.twitter2kafka.configuration.QueryStreamConfiguration.JsonQueryStreamConfiguration;
 import org.totetmatt.twitter2kafka.configuration.TwitterConfiguration;
 
 import kafka.javaapi.producer.Producer;
@@ -21,7 +22,8 @@ import twitter4j.conf.ConfigurationBuilder;
 
 @SpringBootApplication
 public class Twitter2kafkaApplication {
-    // private static final Logger logger = LoggerFactory.getLogger(Twitter2kafkaApplication.class);
+    // private static final Logger logger =
+    // LoggerFactory.getLogger(Twitter2kafkaApplication.class);
     @Autowired
     TwitterStream twitterStream;
     @Autowired
@@ -29,17 +31,19 @@ public class Twitter2kafkaApplication {
     @Autowired
     QueryStreamConfiguration queryStreamConfiguration;
 
-    @Bean(name="Producer")
+    private boolean running = false;
+
+    @Bean(name = "Producer")
     @Autowired
     public Producer<String, String> kafkaProducer(
             KafkaConfiguration kafkaConfig) {
         Properties props = new Properties();
         props.put("metadata.broker.list", kafkaConfig.getBrokers());
         props.put("serializer.class", kafkaConfig.getSerializerClass());
- 
-  
+
         ProducerConfig config = new ProducerConfig(props);
-        final Producer<String, String> producer =new Producer<String, String>(config);
+        final Producer<String, String> producer = new Producer<String, String>(
+                config);
         return producer;
     }
 
@@ -59,20 +63,44 @@ public class Twitter2kafkaApplication {
 
     @PostConstruct
     public void run() {
-        twitterStream.addListener(listener);
-        if (queryStreamConfiguration.isUseSampleStream()) {
-            twitterStream.sample();
-        } else {
-            FilterQuery fq = new FilterQuery();
-            if(!queryStreamConfiguration.getWords().isEmpty()) {
-                fq.track(queryStreamConfiguration.filterQueryWords());
-            }
-            if(!queryStreamConfiguration.getUsers().isEmpty()) {
-                // fq.follow(queryStreamConfiguration.filterQueryUsers());
-            }
-            twitterStream.filter(fq);
-        }
 
+        twitterStream.addListener(listener);
+        this.start();
+
+    }
+
+    public void start() {
+        if (!running) {
+            if (queryStreamConfiguration.isUseSampleStream()) {
+                twitterStream.sample();
+            } else {
+                FilterQuery fq = new FilterQuery();
+                if (!queryStreamConfiguration.getWords().isEmpty()) {
+                    fq.track(queryStreamConfiguration.filterQueryWords());
+                }
+                if (!queryStreamConfiguration.getUsers().isEmpty()) {
+                    // fq.follow(queryStreamConfiguration.filterQueryUsers());
+                }
+                twitterStream.filter(fq);
+                running = true;
+            }
+        }
+    }
+
+    public void stop() {
+        twitterStream.shutdown();
+        running = false;
+    }
+    
+    
+
+    public QueryStreamConfiguration getQueryStreamConfiguration() {
+        return queryStreamConfiguration;
+    }
+
+    public void setQueryStreamConfiguration(
+            QueryStreamConfiguration queryStreamConfiguration) {
+        this.queryStreamConfiguration = queryStreamConfiguration;
     }
 
     public static void main(String[] args) {
