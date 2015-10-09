@@ -10,7 +10,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.totetmatt.twitter2kafka.configuration.KafkaConfiguration;
 import org.totetmatt.twitter2kafka.configuration.QueryStreamConfiguration;
-import org.totetmatt.twitter2kafka.configuration.QueryStreamConfiguration.JsonQueryStreamConfiguration;
 import org.totetmatt.twitter2kafka.configuration.TwitterConfiguration;
 
 import kafka.javaapi.producer.Producer;
