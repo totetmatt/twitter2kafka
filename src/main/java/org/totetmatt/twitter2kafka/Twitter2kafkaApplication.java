@@ -64,7 +64,7 @@ public class Twitter2kafkaApplication {
     public void run() {
 
         twitterStream.addListener(listener);
-        this.start();
+        // this.start();
 
     }
 
@@ -78,7 +78,7 @@ public class Twitter2kafkaApplication {
                     fq.track(queryStreamConfiguration.filterQueryWords());
                 }
                 if (!queryStreamConfiguration.getUsers().isEmpty()) {
-                    // fq.follow(queryStreamConfiguration.filterQueryUsers());
+                    fq.follow(queryStreamConfiguration.filterQueryUsers());
                 }
                 twitterStream.filter(fq);
                 running = true;

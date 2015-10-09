@@ -26,7 +26,7 @@ public class QueryStreamConfiguration {
         public List<User> users = new ArrayList<User>();
         public List<Place> locations = new ArrayList<Place>();
         public List<String> words = new ArrayList<String>();
-        public boolean useSampleStream;
+         boolean useSampleStream;
         public JsonQueryStreamConfiguration(QueryStreamConfiguration conf) {
             this.users = conf.getUsers();
             this.locations = conf.getLocations();
@@ -45,8 +45,14 @@ public class QueryStreamConfiguration {
         return words.stream().toArray(String[]::new);
     }
     
-    public Long[] filterQueryUsers(){
-        return users.stream().map(u -> u.getId()).toArray(Long[]::new);
+    public long[] filterQueryUsers(){
+        long [] list = new long[users.size()];
+        int i = 0;
+         for(User u : users){
+             list[i] = u.getId();
+             i++;
+         }
+         return list;
     }
 
     public List<Place> getLocations() {
