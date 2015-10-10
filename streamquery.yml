@@ -1,4 +1,7 @@
 users: []
 words: []
-useSampleStream: true
+sampleStream: {useSampleStream: true}
+firehose: {useFirehose: false}
+linkstream: {useLinkStream: false}
+sitestream: {useSiteStream: false}
 autostart: true

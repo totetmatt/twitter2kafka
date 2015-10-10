@@ -1,4 +1,4 @@
-package utils;
+package org.totetmatt.twitter2kafka.utils;
 
 import java.io.IOException;
 import java.util.Iterator;

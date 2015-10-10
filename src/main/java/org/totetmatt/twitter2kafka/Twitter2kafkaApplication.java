@@ -15,6 +15,7 @@ import org.totetmatt.twitter2kafka.configuration.TwitterConfiguration;
 import kafka.javaapi.producer.Producer;
 import kafka.producer.ProducerConfig;
 import twitter4j.FilterQuery;
+import twitter4j.QueryResult;
 import twitter4j.TwitterStream;
 import twitter4j.TwitterStreamFactory;
 import twitter4j.conf.ConfigurationBuilder;
@@ -64,7 +65,7 @@ public class Twitter2kafkaApplication {
     public void run() {
 
         twitterStream.addListener(listener);
-        
+
         if (queryStreamConfiguration.isAutostart()) {
             this.start();
         }
@@ -72,10 +73,30 @@ public class Twitter2kafkaApplication {
     }
 
     public void start() {
+
         if (!running) {
-            if (queryStreamConfiguration.isUseSampleStream()) {
+            if (queryStreamConfiguration.getFirehose().isUseFirehose()) {
+                twitterStream.firehose(
+                        queryStreamConfiguration.getFirehose().getCount());
+                
+            } else if (queryStreamConfiguration.getLinkstream()
+                    .isUseLinkStream()) {
+                twitterStream.links(
+                        queryStreamConfiguration.getLinkstream().getCount());
+                
+            } else if (queryStreamConfiguration.getSitestream()
+                    .isUseSiteStream()) {
+                twitterStream.site(
+                        queryStreamConfiguration.getSitestream()
+                                .isWithFollowings(),
+                        queryStreamConfiguration.filterQueryUsers());
+                
+            } else if (queryStreamConfiguration.getSampleStream()
+                    .isUseSampleStream()) {
                 twitterStream.sample();
+                
             } else {
+
                 FilterQuery fq = new FilterQuery();
                 if (!queryStreamConfiguration.getWords().isEmpty()) {
                     fq.track(queryStreamConfiguration.filterQueryWords());
@@ -91,6 +112,7 @@ public class Twitter2kafkaApplication {
 
     public void stop() {
         twitterStream.shutdown();
+        twitterStream.cleanUp();
         running = false;
     }
 

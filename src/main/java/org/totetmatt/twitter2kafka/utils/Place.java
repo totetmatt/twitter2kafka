@@ -1,4 +1,4 @@
-package utils;
+package org.totetmatt.twitter2kafka.utils;
 
 public class Place {
     private double southWestLat;
