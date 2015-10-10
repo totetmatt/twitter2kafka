@@ -15,7 +15,6 @@ import org.totetmatt.twitter2kafka.configuration.TwitterConfiguration;
 import kafka.javaapi.producer.Producer;
 import kafka.producer.ProducerConfig;
 import twitter4j.FilterQuery;
-import twitter4j.QueryResult;
 import twitter4j.TwitterStream;
 import twitter4j.TwitterStreamFactory;
 import twitter4j.conf.ConfigurationBuilder;

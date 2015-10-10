@@ -5,7 +5,8 @@ public class User{
         super();
         // TODO Auto-generated constructor stub
     }
-    private String screenName;
+    
+    private String screenName = null;
     private Long id;
     public String getScreenName() {
         return screenName;

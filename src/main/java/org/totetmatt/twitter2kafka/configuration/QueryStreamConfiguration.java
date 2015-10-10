@@ -31,8 +31,7 @@ public class QueryStreamConfiguration {
         public List<String> words = new ArrayList<String>();
 
         public JsonQueryStreamConfiguration(QueryStreamConfiguration conf) {
-            this.users      = conf.getUsers();
-            this.locations  = conf.getLocations();
+
             this.words      = conf.getWords();
     
         }
