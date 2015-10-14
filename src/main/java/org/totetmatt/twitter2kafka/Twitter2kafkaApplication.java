@@ -1,5 +1,7 @@
 package org.totetmatt.twitter2kafka;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 import javax.annotation.PostConstruct;
@@ -29,6 +31,9 @@ public class Twitter2kafkaApplication {
     ListenerPusher listener;
     @Autowired
     QueryStreamConfiguration queryStreamConfiguration;
+    
+ 
+    List<StreamSession> activeSession = new ArrayList<StreamSession>();
 
     private boolean running = false;
 
